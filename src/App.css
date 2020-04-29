@@ -7,6 +7,22 @@ h1 {
   text-align: center;
 }
 
+h2 {
+  color: rgb(60, 153, 130);
+  text-align: right;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2rem;
+  margin: 40px 50px;
+}
+
+h3 {
+  font-family: source-code-pro;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 1.2rem;
+  margin: 10px 20px;
+}
+
 .outer-container {
   background-color: white;
   border: 3px solid gray;
@@ -38,7 +54,7 @@ h1 {
   left: 25px;
   top: 185px;
   border-radius: 10px;
-  
+
 }
 
 .keyboard {
@@ -48,5 +64,30 @@ h1 {
   width: 376px;
   left: 12px;
   top: 260px;
-  border-radius: 25px;
+  border-radius: 20px;
+
+}
+
+.button {
+  width: 46px;
+  height: 40px;
+  border-radius: 5px;
+  margin: 12.5px;
+  font-size: 1.2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+.button-gray {
+  color: oldlace;
+  color: black;
+}
+
+.button-black {
+  background-color: rgb(27, 27, 27);
+  color: white;
+}
+
+.button-invisible {
+  visibility: hidden;
+  margin: 0 12.5px;
 }
