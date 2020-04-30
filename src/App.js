@@ -12,18 +12,71 @@ export default class App extends React.Component {
     this.state = {
       init: false,
       display: '',
+      last_operator: '',
+      calc_ready: false,
+      mem_number: '',
+      error: false,
     }
   }
 
   onClick = (e, number) => {
     e.preventDefault()
-    this.setState({ init: true })
-    const newNumber = this.state.display + number
-    this.setState((prevState) => ({ ...prevState, display: newNumber }))
+    if (this.state.error) return
+    if (this.state.calc_ready) {
+      this.setState((prevState) => ({
+        ...prevState,
+        mem_number: prevState.display,
+        display: number,
+        calc_ready: false,
+        init: true,
+      }))
+    } else {
+      const newNumber = this.state.display + number
+      this.setState((prevState) => ({ ...prevState, display: newNumber, init: true }))
+    }
+  }
+
+  onOperate = (e, op) => {
+    e.preventDefault()
+    if (this.state.error) return
+    this.setState({ last_operator: op, calc_ready: true })
   }
 
   clear = () => {
-    this.setState({ init: false, display: '' })
+    this.setState({ init: false, display: '', calc_ready: false, error: false })
+  }
+
+  setError = () => {
+    this.setState({ init: true, display: 'E E E E E E E E', calc_ready: true, last_operator: '', mem_number: '', error: true })
+  }
+
+  evaluate = () => {
+    console.log(this.state)
+    let result
+    if (this.state.display === '0') {
+      this.setError()
+      return
+    }
+    switch (this.state.last_operator) {
+      case '+':
+        result = Number(this.state.mem_number) + Number(this.state.display)
+        break
+      case '-':
+        result = Number(this.state.mem_number) - Number(this.state.display)
+        break
+      case '*':
+        result = Number(this.state.mem_number) * Number(this.state.display)
+        break
+      case '/':
+        result = Number(this.state.mem_number) / Number(this.state.display)
+        break
+      default:
+    }
+    if (result === undefined || result.toString().length > 8) {
+      this.setError()
+      return
+    }
+    this.setState({ display: result })
   }
 
   render() {
@@ -54,7 +107,9 @@ export default class App extends React.Component {
                   <Button className="button button-gray" onClick={(e) => this.onClick(e, '9')}>
                     9
                   </Button>
-                  <Button className="button button-black">/</Button>
+                  <Button className="button button-black" onClick={(e) => this.onOperate(e, '/')}>
+                    /
+                  </Button>
                   <Button className="button button-invisible"></Button>
 
                   <Button className="button button-gray" onClick={(e) => this.onClick(e, '4')}>
@@ -66,8 +121,12 @@ export default class App extends React.Component {
                   <Button className="button button-gray" onClick={(e) => this.onClick(e, '6')}>
                     6
                   </Button>
-                  <Button className="button button-black">*</Button>
-                  <Button className="button button-black" onClick={this.clear}>C</Button>
+                  <Button className="button button-black" onClick={(e) => this.onOperate(e, '*')}>
+                    *
+                  </Button>
+                  <Button className="button button-black" onClick={this.clear}>
+                    C
+                  </Button>
 
                   <Button className="button button-gray" onClick={(e) => this.onClick(e, '1')}>
                     1
@@ -78,8 +137,12 @@ export default class App extends React.Component {
                   <Button className="button button-gray" onClick={(e) => this.onClick(e, '3')}>
                     3
                   </Button>
-                  <Button className="button button-black">-</Button>
-                  <Button className="button button-black">CE</Button>
+                  <Button className="button button-black" onClick={(e) => this.onOperate(e, '-')}>
+                    -
+                  </Button>
+                  <Button className="button button-black" onClick={this.clear}>
+                    CE
+                  </Button>
 
                   <Button className="button button-gray" onClick={(e) => this.onClick(e, '0')}>
                     0
@@ -88,8 +151,12 @@ export default class App extends React.Component {
                     .
                   </Button>
                   <Button className="button button-invisible"></Button>
-                  <Button className="button button-black">+</Button>
-                  <Button className="button button-black">=</Button>
+                  <Button className="button button-black" onClick={(e) => this.onOperate(e, '+')}>
+                    +
+                  </Button>
+                  <Button className="button button-black" onClick={this.evaluate}>
+                    =
+                  </Button>
                 </Row>
               </Container>
             </Col>

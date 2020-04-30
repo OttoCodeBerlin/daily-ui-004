@@ -11,8 +11,10 @@ h2 {
   color: rgb(60, 153, 130);
   text-align: right;
   font-family: 'Courier New', Courier, monospace;
+  font-weight: 200;
   font-size: 2rem;
   margin: 40px 50px;
+  letter-spacing: -1px;
 }
 
 h3 {
